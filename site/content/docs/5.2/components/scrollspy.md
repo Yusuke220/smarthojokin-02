@@ -16,7 +16,26 @@ Scrollspy toggles the `.active` class on anchor (`<a>`) elements when the elemen
 
 - As you scroll the "spied" container, an `.active` class is added and removed from anchor links within the associated navigation. Links must have resolvable `id` targets, otherwise they're ignored. For example, a `<a href="#home">home</a>` must correspond to something in the DOM like `<div id="home"></div>`
 
-- Target elements that aren't visible will be ignored and their corresponding nav items will never receive an `.active` class.
+
+{{< callout warning >}}
+**Watch out**
+
+Target elements that aren't visible will be ignored and their corresponding nav items will never receive an `.active` class.
+
+So, in case your scrollspy instance is initialized in a not visible wrapper, will not watch any elements.
+Instead, when the wrapper becomes visible (its elements also), you will need to programmatically call the `refresh` method over the scrollspy instance
+
+```js
+// hidden tab example
+document.querySelectorAll('#nav-tab>.nav-link').forEach(el =>
+  el.addEventListener('shown.bs.tab', event => {
+    const scrollElem = el.getAttribute('data-bs-target') + '>[data-bs-spy="scroll"]'
+    bootstrap.ScrollSpy.getInstance(scrollElem).refresh()
+  })
+)
+```
+
+{{< /callout >}}
 
 Checkout the examples below to see it in action.
 
